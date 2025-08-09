@@ -144,16 +144,17 @@ body {
 /* 書籍グリッド */
 .books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: 1fr;
   gap: 20px;
 }
 
 .book-card {
   background: white;
-  padding: 20px;
+  padding: 15px 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transition: transform 0.2s, box-shadow 0.2s;
+  border-left: 4px solid #007bff;
 }
 
 .book-card:hover {
@@ -161,45 +162,97 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-.book-info h3 {
-  margin: 0 0 10px 0;
+.book-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: 60px;
+}
+
+.book-main-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.book-title {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.book-title a {
   color: #007bff;
-}
-
-.book-info h3 a {
-  color: inherit;
   text-decoration: none;
+  font-weight: 600;
 }
 
-.book-info h3 a:hover {
+.book-title a:hover {
   text-decoration: underline;
 }
 
-.book-info p {
-  margin: 5px 0;
-  font-size: 14px;
+.book-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  font-size: 13px;
   color: #666;
 }
 
-.book-info .author {
+.book-metadata span {
+  white-space: nowrap;
+}
+
+.book-metadata .author {
   font-weight: 500;
   color: #333;
 }
 
-.book-info .rating {
-  color: #333;
+.book-rating-section {
+  flex-shrink: 0;
+  text-align: center;
+  min-width: 120px;
 }
 
-.book-info .stars {
-  color: #ffc107;
-  font-size: 16px;
+.rating-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.rating-label {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+}
+
+.rating-display .stars {
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+.rating-number {
+  font-size: 12px;
+  color: #666;
 }
 
 .book-actions {
-  margin-top: 15px;
+  flex-shrink: 0;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 5px;
+  min-width: 80px;
+  align-items: center;
+}
+
+.btn-sm {
+  padding: 4px 12px;
+  font-size: 12px;
+  border-radius: 4px;
+  text-align: center;
+  width: 100%;
+  min-width: 60px;
 }
 
 /* 書籍詳細ページ */
@@ -424,6 +477,37 @@ body {
   
   .books-grid {
     grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .book-content {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+    text-align: left;
+  }
+  
+  .book-metadata {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .book-rating-section {
+    text-align: left;
+    min-width: auto;
+  }
+  
+  .rating-display {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .book-actions {
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
   }
   
   .book-header {

@@ -27,31 +27,43 @@
       <div class="books-grid" id="books-grid">
         <% @books.each do |book| %>
           <div class="book-card" data-title="<%= book.title %>" data-author="<%= book.author %>" data-finished-date="<%= book.finished_date %>" data-rating="<%= book.rating || 0 %>">
-            <div class="book-info">
-              <h3><%= link_to book.title, book_path(book) %></h3>
-              <p class="author">著者: <%= book.author %></p>
-              <p class="publisher">出版社: <%= book.publisher %></p>
-              <p class="finished-date">読了日: <%= book.finished_date %></p>
-              <% if book.rating %>
-                <p class="rating">評価: <span class="stars" data-rating="<%= book.rating %>" style="<%= 
-                  rating_color = case book.rating.to_i
-                  when 8..10 then '#ff6b35'
-                  when 6..7 then '#ffc107'
-                  else '#6c757d'
-                  end
-                  "color: #{rating_color};"
-                %>"><%= '★' * book.rating.to_i + '☆' * (10 - book.rating.to_i) %></span></p>
-              <% end %>
-              <% if book.price %>
-                <p class="price">価格: <%= number_to_currency(book.price, unit: '¥', precision: 0) %></p>
-              <% end %>
-            </div>
-            <div class="book-actions">
-              <%= link_to "詳細", book_path(book), class: "btn btn-info" %>
-              <%= link_to "編集", edit_book_path(book), class: "btn btn-warning" %>
-              <%= link_to "削除", book_path(book), method: :delete, 
-                          confirm: "本当に削除しますか？", 
-                          class: "btn btn-danger" %>
+            <div class="book-content">
+              <div class="book-main-info">
+                <h3 class="book-title"><%= link_to book.title, book_path(book) %></h3>
+                <div class="book-metadata">
+                  <span class="author">著者: <%= book.author %></span>
+                  <span class="publisher">出版社: <%= book.publisher %></span>
+                  <span class="finished-date">読了日: <%= book.finished_date %></span>
+                  <% if book.price %>
+                    <span class="price">価格: <%= number_to_currency(book.price, unit: '¥', precision: 0) %></span>
+                  <% end %>
+                </div>
+              </div>
+              
+              <div class="book-rating-section">
+                <% if book.rating %>
+                  <div class="rating-display">
+                    <span class="rating-label">評価</span>
+                    <span class="stars" data-rating="<%= book.rating %>" style="<%= 
+                      rating_color = case book.rating.to_i
+                      when 8..10 then '#ff6b35'
+                      when 6..7 then '#ffc107'
+                      else '#6c757d'
+                      end
+                      "color: #{rating_color};"
+                    %>"><%= '★' * book.rating.to_i + '☆' * (10 - book.rating.to_i) %></span>
+                    <span class="rating-number">(<%= book.rating %>/10)</span>
+                  </div>
+                <% end %>
+              </div>
+              
+              <div class="book-actions">
+                <%= link_to "詳細", book_path(book), class: "btn btn-info btn-sm" %>
+                <%= link_to "編集", edit_book_path(book), class: "btn btn-warning btn-sm" %>
+                <%= link_to "削除", book_path(book), method: :delete, 
+                            confirm: "本当に削除しますか？", 
+                            class: "btn btn-danger btn-sm" %>
+              </div>
             </div>
           </div>
         <% end %>
