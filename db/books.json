@@ -1,0 +1,44 @@
+{
+  "books": [
+    {
+      "id": 1,
+      "title": "吾輩は猫である",
+      "author": "夏目漱石",
+      "finished_date": "2025-08-01",
+      "publisher": "春陽堂",
+      "isbn": "9784394101019",
+      "price": 500,
+      "rating": 9
+    },
+    {
+      "id": 2,
+      "title": "走れメロス",
+      "author": "太宰治",
+      "finished_date": "2025-08-05",
+      "publisher": "小峰書店",
+      "isbn": "9784338089201",
+      "price": 800,
+      "rating": 8
+    },
+    {
+      "id": 3,
+      "title": "こころ",
+      "author": "夏目漱石",
+      "finished_date": "2025-07-20",
+      "publisher": "岩波書店",
+      "isbn": "9784003101094",
+      "price": 600,
+      "rating": 5
+    },
+    {
+      "title": "ともだち",
+      "author": "阿部　太郎",
+      "finished_date": "2025-08-08",
+      "publisher": "ららら出版",
+      "isbn": "123",
+      "price": 500,
+      "rating": 8,
+      "id": 4
+    }
+  ]
+}

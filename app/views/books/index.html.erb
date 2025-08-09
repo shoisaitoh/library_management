@@ -1,0 +1,107 @@
+<% content_for :title, "蔵書一覧" %>
+
+<div class="container">
+  <div class="header">
+    <h1>蔵書管理システム</h1>
+    <%= link_to "新しい本を追加", new_book_path, class: "btn btn-primary" %>
+  </div>
+
+  <div class="search-filter">
+    <input type="text" id="search" placeholder="書籍名、著者名で検索..." />
+    <select id="sort">
+      <option value="">並び順</option>
+      <option value="title">書籍名順</option>
+      <option value="author">著者名順</option>
+      <option value="finished_date">読了日順</option>
+      <option value="rating">評価順</option>
+    </select>
+  </div>
+
+  <div id="books-container">
+    <% if @books.empty? %>
+      <div class="no-books">
+        <p>まだ本が登録されていません。</p>
+        <%= link_to "最初の本を追加する", new_book_path, class: "btn btn-primary" %>
+      </div>
+    <% else %>
+      <div class="books-grid" id="books-grid">
+        <% @books.each do |book| %>
+          <div class="book-card" data-title="<%= book.title %>" data-author="<%= book.author %>" data-finished-date="<%= book.finished_date %>" data-rating="<%= book.rating || 0 %>">
+            <div class="book-info">
+              <h3><%= link_to book.title, book_path(book) %></h3>
+              <p class="author">著者: <%= book.author %></p>
+              <p class="publisher">出版社: <%= book.publisher %></p>
+              <p class="finished-date">読了日: <%= book.finished_date %></p>
+              <% if book.rating %>
+                <p class="rating">評価: <span class="stars" data-rating="<%= book.rating %>" style="<%= 
+                  rating_color = case book.rating.to_i
+                  when 8..10 then '#ff6b35'
+                  when 6..7 then '#ffc107'
+                  else '#6c757d'
+                  end
+                  "color: #{rating_color};"
+                %>"><%= '★' * book.rating.to_i + '☆' * (10 - book.rating.to_i) %></span></p>
+              <% end %>
+              <% if book.price %>
+                <p class="price">価格: <%= number_to_currency(book.price, unit: '¥', precision: 0) %></p>
+              <% end %>
+            </div>
+            <div class="book-actions">
+              <%= link_to "詳細", book_path(book), class: "btn btn-info" %>
+              <%= link_to "編集", edit_book_path(book), class: "btn btn-warning" %>
+              <%= link_to "削除", book_path(book), method: :delete, 
+                          confirm: "本当に削除しますか？", 
+                          class: "btn btn-danger" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('search');
+  const sortSelect = document.getElementById('sort');
+  const booksGrid = document.getElementById('books-grid');
+  let books = Array.from(document.querySelectorAll('.book-card'));
+
+  // 検索機能
+  searchInput.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    books.forEach(book => {
+      const title = book.dataset.title.toLowerCase();
+      const author = book.dataset.author.toLowerCase();
+      const isVisible = title.includes(searchTerm) || author.includes(searchTerm);
+      book.style.display = isVisible ? 'block' : 'none';
+    });
+  });
+
+  // ソート機能
+  sortSelect.addEventListener('change', function() {
+    const sortBy = this.value;
+    if (!sortBy) return;
+
+    const sortedBooks = books.slice().sort((a, b) => {
+      let aValue = a.dataset[sortBy.replace('_', '')];
+      let bValue = b.dataset[sortBy.replace('_', '')];
+
+      if (sortBy === 'rating') {
+        return parseInt(bValue) - parseInt(aValue); // 評価は降順
+      } else if (sortBy === 'finished_date') {
+        return new Date(bValue) - new Date(aValue); // 読了日は新しい順
+      } else {
+        return aValue.localeCompare(bValue); // 文字列は昇順
+      }
+    });
+
+    // DOM要素を並び替え
+    sortedBooks.forEach(book => {
+      booksGrid.appendChild(book);
+    });
+  });
+
+  // 星評価はサーバーサイドで生成されるため、JavaScript処理は不要
+});
+</script>

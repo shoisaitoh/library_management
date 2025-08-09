@@ -1,0 +1,67 @@
+<% content_for :title, @book.title %>
+
+<div class="container">
+  <div class="book-detail">
+    <div class="book-header">
+      <h1><%= @book.title %></h1>
+      <div class="book-actions">
+        <%= link_to "編集", edit_book_path(@book), class: "btn btn-warning" %>
+        <%= link_to "削除", book_path(@book), method: :delete, 
+                    confirm: "本当に削除しますか？", 
+                    class: "btn btn-danger" %>
+        <%= link_to "一覧に戻る", books_path, class: "btn btn-secondary" %>
+      </div>
+    </div>
+
+    <div class="book-info-detail">
+      <div class="info-row">
+        <label>著者:</label>
+        <span><%= @book.author %></span>
+      </div>
+
+      <% if @book.publisher.present? %>
+        <div class="info-row">
+          <label>出版社:</label>
+          <span><%= @book.publisher %></span>
+        </div>
+      <% end %>
+
+      <div class="info-row">
+        <label>読了日:</label>
+        <span><%= @book.finished_date %></span>
+      </div>
+
+      <% if @book.isbn.present? %>
+        <div class="info-row">
+          <label>ISBN:</label>
+          <span><%= @book.isbn %></span>
+        </div>
+      <% end %>
+
+      <% if @book.price.present? %>
+        <div class="info-row">
+          <label>価格:</label>
+          <span><%= number_to_currency(@book.price, unit: '¥', precision: 0) %></span>
+        </div>
+      <% end %>
+
+      <% if @book.rating.present? %>
+        <div class="info-row">
+          <label>評価:</label>
+          <span class="rating-display">
+            <span class="stars" data-rating="<%= @book.rating %>" style="<%= 
+              rating_color = case @book.rating.to_i
+              when 8..10 then '#ff6b35'
+              when 6..7 then '#ffc107'
+              else '#6c757d'
+              end
+              "color: #{rating_color};"
+            %>"><%= '★' * @book.rating.to_i + '☆' * (10 - @book.rating.to_i) %></span>
+            (<%= @book.rating %>/10)
+          </span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
